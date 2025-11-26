@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes App | Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .box {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .msg {
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #daf5d7;
+        }
+
+        .error {
+            background: #ffd6d6;
+        }
+
+        #dashboard {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Notes App</h2>
+
+    <!-- Protected Dashboard -->
+    <div id="dashboard" class="box">
+
+        <div id="api_msg"></div>
+
+        <h4>Your Notes</h4>
+        <p>{{users}}</p>
+        <ul id="notes_list"></ul>
+
+    </div>
+    <button onclick="logoutUser()" style="background:#ff5c5c;color:white;">Logout</button>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+    <script>
+        async function loadDashboardData() {
+            const token = localStorage.getItem("access");
+
+            if (!token) {
+                window.location.href = "/login/";
+                return;
+            }
+
+            const res = await fetch("http://127.0.0.1:8000/a/notes/", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            // If token expired or invalid
+            if (res.status === 401) {
+                localStorage.removeItem("access");
+                window.location.href = "/login/";
+                return;
+            }
+
+            const data = await res.json();
+            console.log("Dashboard data:", data);
+
+            // Show dashboard only if data successfully loaded
+            document.getElementById("dashboard").style.display = "block";
+
+            const ul = document.getElementById("notes_list");
+            ul.innerHTML = "";
+
+            data.forEach(user => {
+                ul.innerHTML += `<li>${user.username} -- ${user.role}</li>`;
+
+                user.notes.forEach(note => {
+                    ul.innerHTML += `<li style="margin-left:20px;">${note.note}</li>`;
+                });
+            });
+        }
+
+        loadDashboardData();
+
+
+    </script>
+
+</body>
+
+</html>

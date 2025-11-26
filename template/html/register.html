@@ -1,0 +1,73 @@
+{% load static %}   
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes App | Register</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .box {
+            padding: 15px;
+            /* width: 700px; */
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        input,
+        button,
+        select {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .msg {
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #daf5d7;
+        }
+
+        .error {
+            background: #ffd6d6;
+        }
+
+        #dashboard {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Notes App</h2>
+
+    <!-- Register Box -->
+    <div class="box">
+        <h3>Register</h3>
+        <select name="role" id="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <input id="username" placeholder="Username">
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+        <input id="c_password" type="password" placeholder="Confirm Password">
+        <button onclick="registerUser()">Register</button>
+        <a href="{% url 'login' %}" id="reg_link">Login</a>
+        <div id="reg_msg"></div>
+    </div>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+
+</html>
