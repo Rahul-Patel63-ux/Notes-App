@@ -23,7 +23,7 @@
         button {
             padding: 8px;
             margin: 5px 0;
-            width: 100%;
+            width: 20%;
         }
 
         .msg {
@@ -56,7 +56,6 @@
         <div id="api_msg"></div>
 
         <h4>Your Notes</h4>
-        <p>{{users}}</p>
         <ul id="notes_list"></ul>
 
     </div>
@@ -107,7 +106,15 @@
 
         loadDashboardData();
 
+        // LOGPUT FUNCITON
+        function logoutUser() {
+            console.log("Logout clicked");
+            localStorage.removeItem("access");
+            localStorage.removeItem("role");
 
+            // Redirect to login page
+            window.location.href = "/login/";
+        }
     </script>
 
 </body>

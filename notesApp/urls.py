@@ -23,8 +23,9 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('u/notes/', UserNoteView.as_view(), name='u_notes'),
+    path('u/notes/create/', create_note, name='create_note'),
     path('a/notes/', AdminNoteView.as_view(), name='a_notes'),
-    path('a/notes/<int:pk>', AdminNoteModifiyView.as_view(), name='a_user_delete'),
+    path('u/notes/<int:pk>/', UserNoteModifiyView.as_view(), name='u_notes_modify'),
     path('admin_dashboard/', admin_dashboard, name='admin_dashboard'),
     path('user_dashboard/', user_dashboard, name='user_dashboard'),
     path('login/', LoginView.as_view(), name='login'),

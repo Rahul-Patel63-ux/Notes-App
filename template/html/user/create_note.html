@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes App | Create Note</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .box {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .btn-link {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #86cdf6;
+            color: #333;
+            text-decoration: none;
+            border-radius: 2px;
+            font-weight: 150;
+            border: 1px solid #5bb6e6;
+            transition: 0.2s ease-in-out;
+        }
+
+        .btn-link:hover {
+            background: #5bb6e6;
+            color: #fff;
+        }
+
+
+        #reg_link {
+            padding-top: 95px;
+        }
+        /* .msg {
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 5px;
+        } */
+        .success { background: #daf5d7; }
+        .error { background: #ffd6d6; }
+        #dashboard { display: none; }
+    </style>
+</head>
+<body>
+
+    <h2>Notes App</h2>
+
+    <!-- Create note Box -->
+    <div class="box">
+        <h3>Create Note</h3>
+        <h5 id="user"></h5>
+        <textarea rows="6" id="note" placeholder="Note"></textarea>
+
+        <a onclick="createNote()" class="btn-link">Create</a>
+        <a href="{% url 'user_dashboard' %}" class="btn-link">All Notes</a>
+        <div id="api_msg"></div>
+    </div>
+
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+</body>
+</html>

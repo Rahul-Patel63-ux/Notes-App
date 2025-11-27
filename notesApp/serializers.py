@@ -37,14 +37,16 @@ class RegisterSerializer(serializers.ModelSerializer):
     
 
 class NoteSerializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = NotesModel
-        fields = "__all__"
+        fields = ["id", "note", "created_at"]
+        read_only_fields = ["created_at"]
         
 
 class AdminUserSerializer(serializers.ModelSerializer):
     notes = NoteSerializer(many=True, read_only=True)
     class Meta:
         model = AdminUserModel
-        fields = ["id", "username", "email", "created_at", "is_active", "notes"]
+        # fields = ["id", "username", "email", "created_at", "is_active", "notes", "role"]
+        fields = "__all__"

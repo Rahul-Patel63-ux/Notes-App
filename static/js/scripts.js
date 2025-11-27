@@ -44,7 +44,7 @@ async function loginUser() {
     });
 
     const data = await res.json();
-    console.log("Login Response:", data);  // Debug output
+    console.log("Login Response:", data);
 
     if (!res.ok) {
         showMessage("login_msg", data.error || "Login failed", "error");
@@ -53,7 +53,6 @@ async function loginUser() {
 
     // Save JWT + role
     localStorage.setItem("access", data.access);
-    localStorage.setItem("role", data.role);
 
     showMessage("login_msg", "Login successful!", "success");
 
@@ -65,48 +64,28 @@ async function loginUser() {
     }
 }
 
-
-// FETCH NOTES
-async function fetchNotes() {
-    const res = await fetch(`${BASE_URL}/u/notes/`, {
-        headers: {
-            "Authorization": "Bearer " + accessToken
-        }
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        showMessage("api_msg", "Unauthorized", "error");
-        return;
-    }
-
-    // Show notes
-    const list = document.getElementById("notes_list");
-    list.innerHTML = "";
-
-    data.forEach(note => {
-        const li = document.createElement("li");
-        li.textContent = `${note.note}`;
-        list.appendChild(li);
-    });
-
-    showMessage("api_msg", "Notes fetched successfully", "success");
-}
-
-// CREATE A NOTE (Protected)
+// CREATE A NOTE
 async function createNote() {
-    const title = document.getElementById("note_title").value;
-    const description = document.getElementById("note_desc").value;
+    const accessToken = localStorage.getItem("access");
 
-    const res = await fetch(`${BASE_URL}/notes/`, {
+    const note = document.getElementById("note").value;
+
+    const res = await fetch(`${BASE_URL}/u/notes/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + accessToken
         },
-        body: JSON.stringify({ title, description })
+        body: JSON.stringify({ note })
     });
+
+    // If token expired or invalid
+    if (res.status === 401) {
+        localStorage.removeItem("access");
+        window.location.href = "/login/";
+        return;
+    }
+    console.log("data recived")
 
     const data = await res.json();
 
@@ -116,11 +95,9 @@ async function createNote() {
     }
 
     showMessage("api_msg", "Note created!", "success");
-    fetchNotes();
+    loadDashboardData();
 }
 
-// LOGOUT
-function logoutUser() {
-    accessToken = null;
-    document.getElementById("dashboard").style.display = "none";
-}
+
+
+
